@@ -1,5 +1,5 @@
 import { program } from 'commander';
-import command from './command.js';
+import command from './utils.js';
 
 const getCertificate = () => {
   program
