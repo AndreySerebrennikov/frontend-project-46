@@ -15,7 +15,7 @@ test.each([
   {
     file1: 'file1.yml', file2: 'file2.yml', expected: 'expectedJson.txt',
   },
-])('gendiff', ({
+])('command', ({
   file1, file2, expected,
 }) => {
   expect(command(getFixturePath(file1), getFixturePath(file2))).toBe(resultExpected(expected));
