@@ -11,23 +11,23 @@ const stringify = (data) => {
 const plain = (tree) => {
   const iter = (node, key) => {
     const currentKey = key === '' ? '' : `${key}.`;
-    return node.reduce((acc, item) => {
-      let string = acc;
+    const result = node.map((item) => {
       if (item.type === 'added') {
-        string += `Property '${currentKey}${item.key}' was added with value: ${stringify(item.value)}\n`;
+        return `Property '${currentKey}${item.key}' was added with value: ${stringify(item.value)}\n`;
       }
       if (item.type === 'deleted') {
-        string += `Property '${currentKey}${item.key}' was removed\n`;
+        return `Property '${currentKey}${item.key}' was removed\n`;
       }
       if (item.type === 'changed') {
-        string += `Property '${currentKey}${item.key}' was updated. From ${stringify(item.value1)} to ${stringify(item.value2)}\n`;
+        return `Property '${currentKey}${item.key}' was updated. From ${stringify(item.value1)} to ${stringify(item.value2)}\n`;
       }
       if (item.type === 'nested') {
         const nestedKey = currentKey + item.key;
-        string += iter(item.children, nestedKey);
+        return iter(item.children, nestedKey);
       }
-      return string;
-    }, '');
+      return `Unknown item type: ${item.type}!`;
+    });
+    return result.join('');
   };
   return iter(tree, '').trim();
 };
