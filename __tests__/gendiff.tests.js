@@ -10,16 +10,19 @@ const resultExpected = (fileName) => readFileSync(getFixturePath(fileName), 'utf
 
 test.each([
   {
-    file1: 'file1.json', file2: 'file2.json', formatName: 'stilysh', expected: 'expectedJson.txt',
+    file1: 'file1.json', file2: 'file2.json', formatName: 'stilysh', expected: 'expectedStilysh.txt',
   },
   {
-    file1: 'file1.yml', file2: 'file2.yml', formatName: 'stilysh', expected: 'expectedJson.txt',
+    file1: 'file1.yml', file2: 'file2.yml', formatName: 'stilysh', expected: 'expectedStilysh.txt',
   },
   {
     file1: 'file1.yml', file2: 'file2.yml', formatName: 'plain', expected: 'expectedPlain.txt',
   },
   {
     file1: 'file1.json', file2: 'file2.json', formatName: 'plain', expected: 'expectedPlain.txt',
+  },
+  {
+    file1: 'file1.json', file2: 'file2.json', formatName: 'json', expected: 'expectedJson.txt',
   },
 ])('command', ({
   file1, file2, formatName, expected,
