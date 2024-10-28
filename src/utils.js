@@ -2,7 +2,7 @@ import * as path from 'path';
 import { readFileSync } from 'node:fs';
 import { cwd } from 'node:process';
 import parse from './parser.js';
-import stilysh from '../format/stilysh.js';
+import getFormatter from '../formatters/index.js';
 
 export const getData = (filepath) => {
   const format = path.extname(filepath);
@@ -33,5 +33,5 @@ const getGenDiff = (file1, file2) => {
     return { key: `${key}`, type: 'unchanged', value: file1[key] };
   });
 };
-const command = (path1, path2) => stilysh(getGenDiff(getData(path1), getData(path2)));
+const command = (path1, path2, formatName = 'stilysh') => getFormatter((getGenDiff(getData(path1), getData(path2))), formatName);
 export default command;
