@@ -10,13 +10,20 @@ const resultExpected = (fileName) => readFileSync(getFixturePath(fileName), 'utf
 
 test.each([
   {
-    file1: 'file1.json', file2: 'file2.json', expected: 'expectedJson.txt',
+    file1: 'file1.json', file2: 'file2.json', formatName: 'stilysh', expected: 'expectedJson.txt',
   },
   {
-    file1: 'file1.yml', file2: 'file2.yml', expected: 'expectedJson.txt',
+    file1: 'file1.yml', file2: 'file2.yml', formatName: 'stilysh', expected: 'expectedJson.txt',
+  },
+  {
+    file1: 'file1.yml', file2: 'file2.yml', formatName: 'plain', expected: 'expectedPlain.txt',
+  },
+  {
+    file1: 'file1.json', file2: 'file2.json', formatName: 'plain', expected: 'expectedPlain.txt',
   },
 ])('command', ({
-  file1, file2, expected,
+  file1, file2, formatName, expected,
 }) => {
-  expect(command(getFixturePath(file1), getFixturePath(file2))).toBe(resultExpected(expected));
+  expect(command(getFixturePath(file1), getFixturePath(file2), formatName))
+    .toBe(resultExpected(expected));
 });
