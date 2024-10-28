@@ -1,5 +1,5 @@
 const stringify = (data) => {
-  if (data === null || typeof data === 'boolean') {
+  if (data === null || typeof data === 'boolean' || data === 0) {
     return data;
   }
   if (typeof data === 'object') {
