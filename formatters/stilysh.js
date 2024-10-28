@@ -5,38 +5,34 @@ const stringify = (data, depth) => {
     return data;
   }
   const entries = Object.entries(data);
-  return `{\n${entries.reduce((acc, item) => {
-    const [key, value] = item;
-    let string = acc;
-    string += `${space(depth + 1)}${key}: ${stringify(value, depth + 1)}\n`;
-    return string;
-  }, '')}${space(depth)}}`;
+  const result = entries.map(([key, value]) => `\n${space(depth + 1)}${key}: ${stringify(value, depth + 1)}`).join('');
+  return `{${result}\n${space(depth)}}`;
 };
 
 const stilysh = (tree) => {
   const iter = (node, depth) => {
     const spaceCount = depth + 1;
-    return node.reduce((acc, item) => {
+    const result = node.map((item) => {
       const { type } = item;
-      let string = acc;
       if (type === 'deleted') {
-        string += `${space(spaceCount, 2)}- ${item.key}: ${stringify(item.value, spaceCount)}`;
+        return `${space(spaceCount, 2)}- ${item.key}: ${stringify(item.value, spaceCount)}`;
       }
       if (type === 'added') {
-        string += `${space(spaceCount, 2)}+ ${item.key}: ${stringify(item.value, spaceCount)}`;
+        return `${space(spaceCount, 2)}+ ${item.key}: ${stringify(item.value, spaceCount)}`;
       }
       if (type === 'changed') {
-        string += `${space(spaceCount, 2)}- ${item.key}: ${stringify(item.value1, spaceCount)}\n${space(spaceCount, 2)}+ ${item.key}: ${stringify(item.value2, spaceCount)}`;
+        return `${space(spaceCount, 2)}- ${item.key}: ${stringify(item.value1, spaceCount)}\n${space(spaceCount, 2)}+ ${item.key}: ${stringify(item.value2, spaceCount)}`;
       }
       if (type === 'unchanged') {
-        string += `${space(spaceCount)}${item.key}: ${stringify(item.value, spaceCount)}`;
+        return `${space(spaceCount)}${item.key}: ${stringify(item.value, spaceCount)}`;
       }
       if (type === 'nested') {
-        string += `${space(spaceCount)}${item.key}: {\n${iter(item.children, spaceCount)}${space(spaceCount)}}`;
+        return `${space(spaceCount)}${item.key}: {\n${iter(item.children, spaceCount)}\n${space(spaceCount)}}`;
       }
-      return `${string}\n`;
-    }, '');
+      return `Unknown item type: '${item.type}'!`;
+    });
+    return result.join('\n');
   };
-  return `{\n${iter(tree, 0)}}`;
+  return `{\n${iter(tree, 0)}\n}`;
 };
 export default stilysh;
