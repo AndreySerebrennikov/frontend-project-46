@@ -25,7 +25,10 @@ const plain = (tree) => {
         const nestedKey = currentKey + item.key;
         return iter(item.children, nestedKey);
       }
-      return `Unknown item type: ${item.type}!`;
+      if (item.type === 'unchanged') {
+        return '';
+      }
+      return `Unknown item type: '${item.type}'!`;
     });
     return result.join('');
   };
