@@ -12,10 +12,9 @@ export const getData = (filepath) => {
 };
 
 const getGenDiff = (file1, file2) => {
-  const keys1 = Object.keys(file1);
-  const keys2 = Object.keys(file2);
-  const keys = [...new Set(keys1.concat(keys2))].sort();
-  return keys.map((key) => {
+  const keys = [...new Set(Object.keys(file1).concat(Object.keys(file2)))];
+  const keysSorted = keys.toSorted();
+  return keysSorted.map((key) => {
     if (Object.hasOwn(file1, key) && Object.hasOwn(file2, key)) {
       if (typeof file1[key] === 'object' && typeof file2[key] === 'object') {
         return { key: `${key}`, type: 'nested', children: getGenDiff(file1[key], file2[key]) };
